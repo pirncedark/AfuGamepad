@@ -1,0 +1,9 @@
+.venv/
+build/
+dist/
+wheel/
+__pycache__/
+*.pyc
+*.log
+profiller/
+simge.ico

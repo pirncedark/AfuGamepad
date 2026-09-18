@@ -1,4 +1,58 @@
-# PadKöprü
+# AfuGamepad (PadKöprü)
+
+**English** | [Türkçe](#padköprü-türkçe)
+
+Portable gamepad bridge for Windows. No installation, changes nothing on your system.
+Copy the folder anywhere, run `PadKopru.exe` → it minimizes to the system tray.
+
+## How it works
+1. Watches the foreground window. When it sees a program from your Steam/Epic library or one running fullscreen, it counts it as a **game** and creates a profile for it under `profiller\`.
+2. Depending on the **mode** in that game's profile, it forwards your controller to the game:
+
+| Mode | What it does | When to use |
+|---|---|---|
+| Off | Stays out of the way, controller goes straight to the game | When the controller already works (default) |
+| Virtual Xbox 360 | Plugs in a virtual pad with a genuine Microsoft Xbox 360 identity | When the game doesn't see the controller at all, or maps buttons wrong |
+| Virtual DualShock 4 | Plugs in a virtual PS4 pad | Only for games that recognize PlayStation/DirectInput pads |
+| Keyboard + mouse | Turns the controller into key presses (WASD, mouse) | Games with no controller support |
+
+3. The virtual pad is unplugged when the game closes.
+
+## In-game shortcuts
+**While holding BACK (Select / View):**
+- **RB** → next scheme, **LB** → previous scheme
+- **Y** → change mode (Off → Xbox 360 → DS4 → Keyboard)
+- **START** → stop/start the bridge
+
+On every change a short overlay appears at the top of the screen, the pad rumbles briefly, and the choice is saved to that game's profile.
+
+## Schemes
+Every profile ships with three schemes: **Default**, **Attacks on bumpers (RB↔RT, LB↔LT)**, **Nintendo layout (A↔B, X↔Y)**.
+To add a scheme, append to the `semalar` list in the profile JSON:
+```json
+{"ad": "Jump on RB", "esle": {"A": "RB", "RB": "A"}}
+```
+Button names: `A B X Y LB RB LT RT BACK START LS RS UP DOWN LEFT RIGHT GUIDE`
+
+Bundled profiles: Dark Souls PTDE (ships in Xbox 360 mode, the game only recognizes XInput), Dark Souls Remastered, Dark Souls II SotFS, Dark Souls III, Elden Ring, Sekiro, Lies of P, Nioh 2.
+
+## Good to know
+- **Virtual modes need the ViGEmBus driver.** Without it the virtual modes error out; Off and Keyboard modes still work.
+- **Games usually look for a pad at startup.** If you switch to a virtual mode while the game is running, restart the game. Since the profile is saved, the virtual pad will be ready before the game next time.
+- **Double input:** in virtual mode your real controller stays visible too (hiding it would require a driver). If the game already sees your controller, you don't need virtual mode. Scheme remapping works most cleanly in games that don't see the real pad.
+- With more than one controller plugged in, the **last one you touched** becomes the source.
+
+## Development
+```
+python -m venv .venv
+.venv\Scripts\pip install psutil pystray pillow pyinstaller
+.venv\Scripts\python tests\test_motor.py   # end-to-end test with a virtual pad
+.\build.ps1                                # portable folder in dist\PadKopru\
+```
+
+---
+
+# PadKöprü (Türkçe)
 
 Portable gamepad köprüsü. Kurulum yok, sistemde hiçbir ayar değiştirmez.
 Klasörü istediğin yere kopyala, `PadKopru.exe`'yi aç → saat yanındaki tepsiye küçülür.
